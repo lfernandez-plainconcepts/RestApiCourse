@@ -8,6 +8,8 @@ public interface IMovieRepository
 
     Task<bool> DeleteByIdAsync(Guid id);
 
+    Task<bool> ExistsByIdAsync(Guid id);
+
     Task<IEnumerable<Movie>> GetAllAsync();
 
     Task<Movie?> GetByIdAsync(Guid id);
