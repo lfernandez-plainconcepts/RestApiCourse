@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Helpers\Course.postman_collection.json = Helpers\Course.postman_collection.json
+		Helpers\movies.json = Helpers\movies.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Api", "src\Movies.Api\Movies.Api.csproj", "{94D7B2F3-62E8-454A-AEE5-4B37E88BD3DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{E7919E37-E700-4CCD-9546-24D78521708B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Application", "src\Movies.Application\Movies.Application.csproj", "{4B8F5FDA-60C5-4B02-A098-CDC18202F950}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Contracts", "src\Movies.Contracts\Movies.Contracts.csproj", "{A1BFD592-90B9-4102-85D5-28FEAAB72836}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57C3C12B-C211-40A2-9B9C-03E7E1F9A8CA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{94D7B2F3-62E8-454A-AEE5-4B37E88BD3DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94D7B2F3-62E8-454A-AEE5-4B37E88BD3DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94D7B2F3-62E8-454A-AEE5-4B37E88BD3DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94D7B2F3-62E8-454A-AEE5-4B37E88BD3DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B8F5FDA-60C5-4B02-A098-CDC18202F950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B8F5FDA-60C5-4B02-A098-CDC18202F950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B8F5FDA-60C5-4B02-A098-CDC18202F950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B8F5FDA-60C5-4B02-A098-CDC18202F950}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1BFD592-90B9-4102-85D5-28FEAAB72836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BFD592-90B9-4102-85D5-28FEAAB72836}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BFD592-90B9-4102-85D5-28FEAAB72836}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BFD592-90B9-4102-85D5-28FEAAB72836}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{94D7B2F3-62E8-454A-AEE5-4B37E88BD3DE} = {E7919E37-E700-4CCD-9546-24D78521708B}
+		{4B8F5FDA-60C5-4B02-A098-CDC18202F950} = {E7919E37-E700-4CCD-9546-24D78521708B}
+		{A1BFD592-90B9-4102-85D5-28FEAAB72836} = {E7919E37-E700-4CCD-9546-24D78521708B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90770F8C-E500-46D0-BA46-08A9B9219290}
+	EndGlobalSection
+EndGlobal
