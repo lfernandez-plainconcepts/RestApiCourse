@@ -1,12 +1,33 @@
 ﻿
 using Dapper;
 using Movies.Application.Database;
+using Movies.Application.Models;
 
 namespace Movies.Application.Repositories;
 
 public class RatingRepository(IDbConnectionFactory dbConnectionFactory) : IRatingRepository
 {
     private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
+
+    public async Task<bool> DeleteRatingAsync(
+        Guid movieId,
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
+
+        var deleteRatingCommand = new CommandDefinition("""
+            DELETE FROM ratings 
+            WHERE movieId = @MovieId
+              AND userId = @UserId;
+            """,
+            new { MovieId = movieId, UserId = userId },
+            cancellationToken: cancellationToken);
+
+        var result = await connection.ExecuteAsync(deleteRatingCommand);
+
+        return result > 0;
+    }
 
     public async Task<float?> GetRatingAsync(
         Guid movieId,
@@ -46,6 +67,26 @@ public class RatingRepository(IDbConnectionFactory dbConnectionFactory) : IRatin
             cancellationToken: cancellationToken);
 
         return await connection.QuerySingleOrDefaultAsync<(float?, int?)>(ratingQuery);
+    }
+
+    public async Task<IEnumerable<MovieRating>> GetRatingsForUserAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
+
+        var userRatingQuery = new CommandDefinition("""
+            SELECT r.rating,
+                   r.movieId,
+                   m.slug
+            FROM ratings r 
+              INNER JOIN movies m ON r.movieId = m.id
+            WHERE r.userId = @UserId;              
+            """,
+            new { UserId = userId },
+            cancellationToken: cancellationToken);
+
+        return await connection.QueryAsync<MovieRating>(userRatingQuery);
     }
 
     public async Task<bool> RateMovieAsync(
