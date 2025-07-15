@@ -9,4 +9,10 @@ public interface IRatingRepository
         Guid movieId,
         Guid userId,
         CancellationToken cancellationToken = default);
+
+    Task<bool> RateMovieAsync(
+        Guid movieId,
+        Guid userId,
+        int rating,
+        CancellationToken cancellationToken = default);
 }

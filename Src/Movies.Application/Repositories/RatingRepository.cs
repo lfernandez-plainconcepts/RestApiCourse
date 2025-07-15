@@ -47,4 +47,26 @@ public class RatingRepository(IDbConnectionFactory dbConnectionFactory) : IRatin
 
         return await connection.QuerySingleOrDefaultAsync<(float?, int?)>(ratingQuery);
     }
+
+    public async Task<bool> RateMovieAsync(
+        Guid movieId,
+        Guid userId,
+        int rating,
+        CancellationToken cancellationToken = default)
+    {
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
+
+        var insertRatingCommand = new CommandDefinition("""
+            INSERT INTO ratings (userid, movieid, rating)
+            VALUES (@UserId, @MovieId, @Rating)
+            ON CONFLICT (userid, movieid) DO UPDATE
+              SET rating = @Rating;
+            """,
+            new { UserId = userId, MovieId = movieId, Rating = rating },
+            cancellationToken: cancellationToken);
+
+        var result = await connection.ExecuteAsync(insertRatingCommand);
+
+        return result > 0;
+    }
 }
