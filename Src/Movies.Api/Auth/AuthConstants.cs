@@ -1,4 +1,4 @@
-﻿namespace Movies.Api;
+﻿namespace Movies.Api.Auth;
 
 public static class AuthConstants
 {
@@ -12,5 +12,6 @@ public static class AuthConstants
     {
         public const string Admin = "admin";
         public const string TrustedMember = "trusted_member";
+        public const string UserId = "userid";
     }
 }
