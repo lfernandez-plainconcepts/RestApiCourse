@@ -13,5 +13,15 @@ public static class ApiEndpoints
         public const string GetAll = MoviesBase;
         public const string Update = $"{MoviesBase}/{{id:guid}}";
         public const string Delete = $"{MoviesBase}/{{id:guid}}";
+
+        public const string Rate = $"{MoviesBase}/{{id:guid}}/ratings";
+        public const string DeleteRating = $"{MoviesBase}/{{id:guid}}/ratings";
+    }
+
+    public static class Ratings
+    {
+        private const string RatingsBase = $"{ApiBase}/ratings";
+
+        public const string GetUserRatings = $"{RatingsBase}/me";
     }
 }
