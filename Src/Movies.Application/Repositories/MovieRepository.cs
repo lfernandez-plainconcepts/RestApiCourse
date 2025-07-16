@@ -135,13 +135,17 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
               LEFT JOIN ratings myr ON m.id = myr.movieId AND myr.userId = @UserId
             WHERE (@Title is null or m.title like ('%' || @Title || '%'))
               AND (@YearOfRelease is null or m.yearOfRelease = @YearOfRelease)
-            GROUP BY id, userrating {orderClause};
+            GROUP BY id, userrating {orderClause}
+            LIMIT @PageSize
+            OFFSET @PageOffset;
             """,
             new
             {
                 options.UserId,
                 options.Title,
-                options.YearOfRelease
+                options.YearOfRelease,
+                options.PageSize,
+                PageOffset = options.PageSize * (options.Page - 1)
             },
             cancellationToken: cancellationToken);
 
@@ -249,6 +253,28 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
         movie.Genres = [.. genres];
 
         return movie;
+    }
+
+    public async Task<int> GetCountAsync(
+        GetAllMoviesOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
+
+        var countMoviesQuery = new CommandDefinition($"""
+            SELECT COUNT(m.id)
+            FROM movies m
+            WHERE (@Title is null or m.title like ('%' || @Title || '%'))
+              AND (@YearOfRelease is null or m.yearOfRelease = @YearOfRelease);            
+            """,
+            new
+            {
+                options.Title,
+                options.YearOfRelease,
+            },
+            cancellationToken: cancellationToken);
+
+        return await connection.QuerySingleAsync<int>(countMoviesQuery);
     }
 
     public async Task<bool> UpdateAsync(

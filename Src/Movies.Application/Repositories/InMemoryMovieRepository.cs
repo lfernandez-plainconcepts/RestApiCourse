@@ -37,7 +37,11 @@ public class InMemoryMovieRepository : IMovieRepository
         GetAllMoviesOptions options,
         CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(_movies.AsEnumerable());
+        var filteredMovies = _movies
+            .Where(m => (options.Title is null || options.Title == m.Title)
+                     && (options.YearOfRelease is null || options.YearOfRelease == m.YearOfRelease))
+            .AsEnumerable();
+        return Task.FromResult(filteredMovies);
     }
 
     public Task<Movie?> GetByIdAsync(
@@ -56,6 +60,14 @@ public class InMemoryMovieRepository : IMovieRepository
     {
         var movie = _movies.SingleOrDefault(m => m.Slug == slug);
         return Task.FromResult(movie);
+    }
+
+    public async Task<int> GetCountAsync(
+        GetAllMoviesOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        var results = await GetAllAsync(options, cancellationToken);
+        return results.Count();
     }
 
     public Task<bool> UpdateAsync(

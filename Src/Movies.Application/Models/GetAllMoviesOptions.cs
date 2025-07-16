@@ -9,4 +9,8 @@ public class GetAllMoviesOptions
     public Guid? UserId { get; set; }
 
     public SortOptions? SortBy { get; set; }
+
+    public int Page { get; set; }
+
+    public int PageSize { get; set; }
 }

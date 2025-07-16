@@ -56,6 +56,13 @@ public class MovieService(
         return _movieRepository.GetBySlugAsync(slug, userId, cancellationToken);
     }
 
+    public Task<int> GetCountAsync(
+        GetAllMoviesOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return _movieRepository.GetCountAsync(options, cancellationToken);
+    }
+
     public async Task<Movie?> UpdateAsync(
         Movie movie,
         Guid? userId = default,

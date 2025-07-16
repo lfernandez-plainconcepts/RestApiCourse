@@ -13,5 +13,13 @@ public class GetAllMoviesOptionsValidator : AbstractValidator<GetAllMoviesOption
         RuleFor(options => options.SortBy)
             .Must(sort => sort is null || sort.IsValid())
             .WithMessage($"Sort options are invalid. Valid options are: {string.Join(", ", SortOptions.ValidSortFields)}");
+
+        RuleFor(options => options.Page)
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("Page must be greater than or equal to 1.");
+
+        RuleFor(options => options.PageSize)
+            .InclusiveBetween(1, 25)
+            .WithMessage("Page size must be between 1 and 25.");
     }
 }

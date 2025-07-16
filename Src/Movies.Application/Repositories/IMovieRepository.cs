@@ -31,6 +31,10 @@ public interface IMovieRepository
         Guid? userId = default,
         CancellationToken cancellationToken = default);
 
+    Task<int> GetCountAsync(
+        GetAllMoviesOptions options,
+        CancellationToken cancellationToken = default);
+
     Task<bool> UpdateAsync(
         Movie movie,
         CancellationToken cancellationToken = default);
