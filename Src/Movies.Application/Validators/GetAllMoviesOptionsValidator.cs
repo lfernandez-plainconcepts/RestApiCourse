@@ -9,5 +9,9 @@ public class GetAllMoviesOptionsValidator : AbstractValidator<GetAllMoviesOption
         RuleFor(options => options.YearOfRelease)
             .InclusiveBetween(1888, DateTime.Now.Year)
             .WithMessage($"Year of release must be between 1888 and {DateTime.Now.Year}.");
+
+        RuleFor(options => options.SortBy)
+            .Must(sort => sort is null || sort.IsValid())
+            .WithMessage($"Sort options are invalid. Valid options are: {string.Join(", ", SortOptions.ValidSortFields)}");
     }
 }

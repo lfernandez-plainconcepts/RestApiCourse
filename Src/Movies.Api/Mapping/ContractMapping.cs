@@ -65,7 +65,8 @@ public static class ContractMapping
         return new GetAllMoviesOptions
         {
             Title = request.Title,
-            YearOfRelease = request.Year
+            YearOfRelease = request.Year,
+            SortBy = SortOptions.Parse(request.SortBy)
         };
     }
 

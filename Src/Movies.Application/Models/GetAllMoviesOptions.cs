@@ -2,9 +2,11 @@
 
 public class GetAllMoviesOptions
 {
-    public required string? Title { get; init; }
+    public string? Title { get; set; }
 
-    public required int? YearOfRelease { get; init; }
+    public int? YearOfRelease { get; set; }
 
     public Guid? UserId { get; set; }
+
+    public SortOptions? SortBy { get; set; }
 }

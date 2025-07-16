@@ -117,7 +117,14 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
 
-        var moviesQuery = new CommandDefinition("""
+        var orderClause = options.SortBy is null
+            ? string.Empty
+            : $"""
+              , m.{options.SortBy.Field}
+              ORDER BY m.{options.SortBy.Field} {options.SortBy.Direction.ToSqlMoniker()}
+              """;
+
+        var moviesQuery = new CommandDefinition($"""
             SELECT m.*, 
                    string_agg(g.name, ',') AS genres,
                    round(avg(r.rating), 1) AS rating,
@@ -128,13 +135,13 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
               LEFT JOIN ratings myr ON m.id = myr.movieId AND myr.userId = @UserId
             WHERE (@Title is null or m.title like ('%' || @Title || '%'))
               AND (@YearOfRelease is null or m.yearOfRelease = @YearOfRelease)
-            GROUP BY id, userrating;
+            GROUP BY id, userrating {orderClause};
             """,
             new
             {
-                UserId = options.UserId,
-                Title = options.Title,
-                YearOfRelease = options.YearOfRelease
+                options.UserId,
+                options.Title,
+                options.YearOfRelease
             },
             cancellationToken: cancellationToken);
 
