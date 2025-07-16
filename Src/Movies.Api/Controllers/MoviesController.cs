@@ -47,17 +47,20 @@ public class MoviesController(IMovieService movieService) : ControllerBase
 
     [HttpGet(ApiEndpoints.Movies.GetAll)]
     public async Task<IActionResult> GetAll(
-        [FromQuery] GetAllMoviesRequest request,
+        [FromQuery] RequestMoviesFilterParams filterParams,
+        [FromQuery] RequestPageParams pageParams,
+        [FromQuery] RequestSortParams sortParams,
         CancellationToken cancellationToken)
     {
         var userId = HttpContext.GetUserId();
-        var options = request.MapToOptions()
-            .WithUser(userId!.Value);
+        var filterOptions = filterParams.MapToOptions().WithUser(userId!.Value);
+        var pageOptions = pageParams.MapToOptions();
+        var sortOptions = sortParams.MapToOptions();
 
-        var movies = await _movieService.GetAllAsync(options, cancellationToken);
-        var movieCount = await _movieService.GetCountAsync(options, cancellationToken);
+        var movies = await _movieService.GetAllAsync(filterOptions, pageOptions, sortOptions, cancellationToken);
+        var movieCount = await _movieService.GetCountAsync(filterOptions, cancellationToken);
 
-        var response = movies.MapToResponse(request.Page, request.PageSize, movieCount);
+        var response = movies.MapToResponse(pageOptions, movieCount);
         return Ok(response);
     }
 

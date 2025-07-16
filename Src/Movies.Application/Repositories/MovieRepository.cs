@@ -112,16 +112,18 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
     }
 
     public async Task<IEnumerable<Movie>> GetAllAsync(
-        GetAllMoviesOptions options,
+        MoviesFilterOptions filterOptions,
+        PageOptions pageOptions,
+        SortOptions? sortOptions = default,
         CancellationToken cancellationToken = default)
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
 
-        var orderClause = options.SortBy is null
+        var orderClause = sortOptions is null
             ? string.Empty
             : $"""
-              , m.{options.SortBy.Field}
-              ORDER BY m.{options.SortBy.Field} {options.SortBy.Direction.ToSqlMoniker()}
+              , m.{sortOptions.Field}
+              ORDER BY m.{sortOptions.Field} {sortOptions.Direction.ToSqlMoniker()}
               """;
 
         var moviesQuery = new CommandDefinition($"""
@@ -141,11 +143,11 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
             """,
             new
             {
-                options.UserId,
-                options.Title,
-                options.YearOfRelease,
-                options.PageSize,
-                PageOffset = options.PageSize * (options.Page - 1)
+                filterOptions.UserId,
+                filterOptions.Title,
+                filterOptions.YearOfRelease,
+                pageOptions.PageSize,
+                pageOptions.PageOffset,
             },
             cancellationToken: cancellationToken);
 
@@ -256,7 +258,7 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
     }
 
     public async Task<int> GetCountAsync(
-        GetAllMoviesOptions options,
+        MoviesFilterOptions options,
         CancellationToken cancellationToken = default)
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);

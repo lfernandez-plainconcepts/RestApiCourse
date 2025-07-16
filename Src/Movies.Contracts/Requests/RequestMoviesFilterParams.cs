@@ -1,6 +1,6 @@
 ﻿namespace Movies.Contracts.Requests;
 
-public class GetAllMoviesRequest : PagedRequest
+public class RequestMoviesFilterParams
 {
     public required string? Title { get; init; }
 

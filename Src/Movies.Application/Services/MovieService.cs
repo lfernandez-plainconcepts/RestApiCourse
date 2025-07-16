@@ -6,14 +6,18 @@ namespace Movies.Application.Services;
 
 public class MovieService(
     IMovieRepository movieRepository,
-    IValidator<Movie> movieValidator,
     IRatingRepository ratingRepository,
-    IValidator<GetAllMoviesOptions> optionsValidator) : IMovieService
+    IValidator<Movie> movieValidator,
+    IValidator<MoviesFilterOptions> filterOptionsValidator,
+    IValidator<PageOptions> pageOptionsValidator,
+    IValidator<SortOptions> sortOptionsValidator) : IMovieService
 {
     private readonly IMovieRepository _movieRepository = movieRepository;
-    private readonly IValidator<Movie> _movieValidator = movieValidator;
     private readonly IRatingRepository _ratingRepository = ratingRepository;
-    private readonly IValidator<GetAllMoviesOptions> _optionsValidator = optionsValidator;
+    private readonly IValidator<Movie> _movieValidator = movieValidator;
+    private readonly IValidator<MoviesFilterOptions> _filterOptionsValidator = filterOptionsValidator;
+    private readonly IValidator<PageOptions> _pageOptionsValidator = pageOptionsValidator;
+    private readonly IValidator<SortOptions> _sortOptionsValidator = sortOptionsValidator;
 
     public async Task<bool> CreateAsync(
         Movie movie,
@@ -33,11 +37,19 @@ public class MovieService(
     }
 
     public async Task<IEnumerable<Movie>> GetAllAsync(
-        GetAllMoviesOptions options,
+        MoviesFilterOptions filterOptions,
+        PageOptions pageOptions,
+        SortOptions? sortOptions = default,
         CancellationToken cancellationToken = default)
     {
-        await _optionsValidator.ValidateAndThrowAsync(options, cancellationToken);
-        return await _movieRepository.GetAllAsync(options, cancellationToken);
+        await _filterOptionsValidator.ValidateAndThrowAsync(filterOptions, cancellationToken);
+        await _pageOptionsValidator.ValidateAndThrowAsync(pageOptions, cancellationToken);
+        if (sortOptions is not null)
+        {
+            await _sortOptionsValidator.ValidateAndThrowAsync(sortOptions, cancellationToken);
+        }
+
+        return await _movieRepository.GetAllAsync(filterOptions, pageOptions, sortOptions, cancellationToken);
     }
 
     public Task<Movie?> GetByIdAsync(
@@ -56,11 +68,13 @@ public class MovieService(
         return _movieRepository.GetBySlugAsync(slug, userId, cancellationToken);
     }
 
-    public Task<int> GetCountAsync(
-        GetAllMoviesOptions options,
+    public async Task<int> GetCountAsync(
+        MoviesFilterOptions filterOptions,
         CancellationToken cancellationToken = default)
     {
-        return _movieRepository.GetCountAsync(options, cancellationToken);
+        await _filterOptionsValidator.ValidateAndThrowAsync(filterOptions, cancellationToken);
+
+        return await _movieRepository.GetCountAsync(filterOptions, cancellationToken);
     }
 
     public async Task<Movie?> UpdateAsync(

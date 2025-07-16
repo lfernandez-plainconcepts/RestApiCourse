@@ -1,4 +1,5 @@
 ﻿namespace Movies.Application.Models;
+
 public class SortOptions
 {
     public const char DescendingMoniker = '-';
@@ -11,14 +12,6 @@ public class SortOptions
     public string? Field { get; init; }
 
     public SortDirection Direction { get; init; }
-
-    public bool IsValid()
-    {
-        if (string.IsNullOrEmpty(Field))
-            return false;
-
-        return ValidSortFields.Contains(Field.ToLowerInvariant());
-    }
 
     public static SortOptions? Parse(string? requestParam)
     {
