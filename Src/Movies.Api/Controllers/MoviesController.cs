@@ -8,10 +8,8 @@ using Movies.Contracts.Requests;
 
 namespace Movies.Api.Controllers;
 
-
 [ApiController]
 [ApiVersion(1.0)]
-[Authorize]
 [Route("")]
 public class MoviesController(IMovieService movieService) : ControllerBase
 {
@@ -66,7 +64,6 @@ public class MoviesController(IMovieService movieService) : ControllerBase
         var response = movies.MapToResponse(pageOptions, movieCount);
         return Ok(response);
     }
-
 
     [Authorize(AuthConstants.Policies.TrustedMember)]
     [HttpPut(ApiEndpoints.Movies.Update)]
