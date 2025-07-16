@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Movies.Api.Auth;
@@ -34,6 +35,14 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy(AuthConstants.Policies.TrustedMember, p => p.RequireAssertion(c =>
         c.User.HasClaim(m => m is { Type: AuthConstants.Claims.Admin, Value: "true" }) ||
         c.User.HasClaim(m => m is { Type: AuthConstants.Claims.TrustedMember, Value: "true" })));
+
+builder.Services.AddApiVersioning(x =>
+{
+    x.AssumeDefaultVersionWhenUnspecified = true;
+    x.DefaultApiVersion = new ApiVersion(1, 0);
+    x.ReportApiVersions = true;
+    x.ApiVersionReader = new MediaTypeApiVersionReader("api-version");
+}).AddMvc();
 
 builder.Services.AddControllers();
 
