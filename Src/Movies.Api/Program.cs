@@ -64,4 +64,10 @@ app.MapControllers();
 var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
 await dbInitializer.InitializeAsync();
 
+if (bool.TryParse(config["Database:SeedOnStartup"], out bool seedOnStartup) && seedOnStartup)
+{
+    await dbInitializer.SeedAsync();
+}
+
 await app.RunAsync();
+

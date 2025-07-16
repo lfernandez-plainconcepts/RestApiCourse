@@ -112,7 +112,7 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
     }
 
     public async Task<IEnumerable<Movie>> GetAllAsync(
-        Guid? userId = null,
+        GetAllMoviesOptions options,
         CancellationToken cancellationToken = default)
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
@@ -126,9 +126,16 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
               LEFT JOIN genres g ON m.id = g.movieId
               LEFT JOIN ratings r ON m.id = r.movieId
               LEFT JOIN ratings myr ON m.id = myr.movieId AND myr.userId = @UserId
+            WHERE (@Title is null or m.title like ('%' || @Title || '%'))
+              AND (@YearOfRelease is null or m.yearOfRelease = @YearOfRelease)
             GROUP BY id, userrating;
             """,
-            new { UserId = userId },
+            new
+            {
+                UserId = options.UserId,
+                Title = options.Title,
+                YearOfRelease = options.YearOfRelease
+            },
             cancellationToken: cancellationToken);
 
         var queryResult = await connection.QueryAsync(moviesQuery);
@@ -140,10 +147,17 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
             YearOfRelease = result.yearofrelease,
             Rating = (float?)result.rating,
             UserRating = (int?)result.userrating,
-            Genres = Enumerable.ToList(result.genres?.Split(',')) ?? new List<string>()
+            Genres = MapGenres(result.genres)
         });
 
         return movies;
+    }
+
+    private static List<string> MapGenres(string genres)
+    {
+        return string.IsNullOrEmpty(genres)
+            ? []
+            : [.. genres.Split(',')];
     }
 
     public async Task<Movie?> GetByIdAsync(

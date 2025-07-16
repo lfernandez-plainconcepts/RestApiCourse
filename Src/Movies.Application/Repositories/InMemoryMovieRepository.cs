@@ -34,7 +34,7 @@ public class InMemoryMovieRepository : IMovieRepository
     }
 
     public Task<IEnumerable<Movie>> GetAllAsync(
-        Guid? userId = null,
+        GetAllMoviesOptions options,
         CancellationToken cancellationToken = default)
     {
         return Task.FromResult(_movies.AsEnumerable());

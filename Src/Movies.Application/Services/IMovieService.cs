@@ -15,7 +15,7 @@ public interface IMovieService
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<Movie>> GetAllAsync(
-        Guid? userId = default,
+        GetAllMoviesOptions options,
         CancellationToken cancellationToken = default);
 
     Task<Movie?> GetByIdAsync(
