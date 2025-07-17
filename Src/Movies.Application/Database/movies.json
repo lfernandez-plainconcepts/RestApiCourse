@@ -9200,22 +9200,7 @@
       "https://www.imdb.com/title/tt117008",
       "https://www.themoviedb.org/movie/10830"
     ]
-  },
-  {
-    "Id": "a525f80a-8c8d-4862-be72-5e65a5e8b787",
-    "Slug": "emma-1996",
-    "Title": "Emma",
-    "YearOfRelease": 1996,
-    "Genres": [
-      "Comedy",
-      "Drama",
-      "Romance"
-    ],
-    "Links": [
-      "https://www.imdb.com/title/tt116191",
-      "https://www.themoviedb.org/movie/3573"
-    ]
-  },
+  },  
   {
     "Id": "9709d15b-1d27-4d30-b7b2-c09785070b67",
     "Slug": "crow-city-of-angels-the-1996",
@@ -79429,20 +79414,7 @@
       "https://www.imdb.com/title/tt117407",
       "https://www.themoviedb.org/movie/2061"
     ]
-  },
-  {
-    "Id": "09e6732f-0bed-46b2-a2e0-b5c0634bbcc5",
-    "Slug": "emma-1996",
-    "Title": "Emma",
-    "YearOfRelease": 1996,
-    "Genres": [
-      "Romance"
-    ],
-    "Links": [
-      "https://www.imdb.com/title/tt118308",
-      "https://www.themoviedb.org/movie/12254"
-    ]
-  },
+  },  
   {
     "Id": "6ff111b2-1e2f-46fa-be81-a65fa8774610",
     "Slug": "boxer-the-1997",
@@ -98752,21 +98724,7 @@
       "https://www.imdb.com/title/tt983213",
       "https://www.themoviedb.org/movie/38142"
     ]
-  },
-  {
-    "Id": "5d7abb67-1cbd-4931-8782-d17c71344cb0",
-    "Slug": "war-of-the-worlds-2005",
-    "Title": "War of the Worlds",
-    "YearOfRelease": 2005,
-    "Genres": [
-      "Action",
-      "Sci-Fi"
-    ],
-    "Links": [
-      "https://www.imdb.com/title/tt449040",
-      "https://www.themoviedb.org/movie/34812"
-    ]
-  },
+  },  
   {
     "Id": "d9e236f4-11a3-454d-b147-243e05ba7230",
     "Slug": "ben-x-2007",
@@ -129906,24 +129864,7 @@
       "https://www.imdb.com/title/tt398563",
       "https://www.themoviedb.org/movie/5846"
     ]
-  },
-  {
-    "Id": "95c68505-c2d0-4302-9d10-5b49b3fa6b32",
-    "Slug": "confessions-of-a-dangerous-mind-2002",
-    "Title": "Confessions of a Dangerous Mind",
-    "YearOfRelease": 2002,
-    "Genres": [
-      "Comedy",
-      "Crime",
-      "Drama",
-      "Romance",
-      "Thriller"
-    ],
-    "Links": [
-      "https://www.imdb.com/title/tt270288",
-      "https://www.themoviedb.org/movie/4912"
-    ]
-  },
+  },  
   {
     "Id": "ba92607a-4957-4e1b-bf5c-6675bbf22667",
     "Slug": "goosebumps-2015",
@@ -130319,21 +130260,7 @@
       "https://www.imdb.com/title/tt82726",
       "https://www.themoviedb.org/movie/53179"
     ]
-  },
-  {
-    "Id": "68b770a5-e36e-4376-a621-34fcd4f3aaaf",
-    "Slug": "eros-2004",
-    "Title": "Eros",
-    "YearOfRelease": 2004,
-    "Genres": [
-      "Drama",
-      "Romance"
-    ],
-    "Links": [
-      "https://www.imdb.com/title/tt343663",
-      "https://www.themoviedb.org/movie/39850"
-    ]
-  },
+  },  
   {
     "Id": "e66638c4-125a-49bb-8698-48386fc917d2",
     "Slug": "those-happy-days-2006",
@@ -134823,21 +134750,7 @@
       "https://www.imdb.com/title/tt2990126",
       "https://www.themoviedb.org/movie/334532"
     ]
-  },
-  {
-    "Id": "03d67e6b-c9fc-4fff-a3a6-e05545107ded",
-    "Slug": "saturn-3-1980",
-    "Title": "Saturn 3",
-    "YearOfRelease": 1980,
-    "Genres": [
-      "Sci-Fi",
-      "Thriller"
-    ],
-    "Links": [
-      "https://www.imdb.com/title/tt79285",
-      "https://www.themoviedb.org/movie/19761"
-    ]
-  },
+  },  
   {
     "Id": "99c2be25-8310-46d0-bfba-760cc82b7e55",
     "Slug": "beauty-and-the-beast-2017",

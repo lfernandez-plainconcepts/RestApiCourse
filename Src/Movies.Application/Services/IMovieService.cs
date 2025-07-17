@@ -15,7 +15,9 @@ public interface IMovieService
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<Movie>> GetAllAsync(
-        Guid? userId = default,
+        MoviesFilterOptions filterOptions,
+        PageOptions pageOptions,
+        SortOptions? sortOptions = default,
         CancellationToken cancellationToken = default);
 
     Task<Movie?> GetByIdAsync(
@@ -26,6 +28,10 @@ public interface IMovieService
     Task<Movie?> GetBySlugAsync(
         string slug,
         Guid? userId = default,
+        CancellationToken cancellationToken = default);
+
+    Task<int> GetCountAsync(
+        MoviesFilterOptions filterOptions,
         CancellationToken cancellationToken = default);
 
     Task<Movie?> UpdateAsync(

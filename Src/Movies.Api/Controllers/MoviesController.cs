@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Auth;
 using Movies.Api.Mapping;
@@ -7,8 +8,8 @@ using Movies.Contracts.Requests;
 
 namespace Movies.Api.Controllers;
 
-[Authorize]
 [ApiController]
+[ApiVersion(1.0)]
 [Route("")]
 public class MoviesController(IMovieService movieService) : ControllerBase
 {
@@ -46,12 +47,21 @@ public class MoviesController(IMovieService movieService) : ControllerBase
     }
 
     [HttpGet(ApiEndpoints.Movies.GetAll)]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllV1(
+        [FromQuery] RequestMoviesFilterParams filterParams,
+        [FromQuery] RequestPageParams pageParams,
+        [FromQuery] RequestSortParams sortParams,
+        CancellationToken cancellationToken)
     {
         var userId = HttpContext.GetUserId();
-        var movies = await _movieService.GetAllAsync(userId, cancellationToken);
+        var filterOptions = filterParams.MapToOptions().WithUser(userId!.Value);
+        var pageOptions = pageParams.MapToOptions();
+        var sortOptions = sortParams.MapToOptions();
 
-        var response = movies.MapToResponse();
+        var movies = await _movieService.GetAllAsync(filterOptions, pageOptions, sortOptions, cancellationToken);
+        var movieCount = await _movieService.GetCountAsync(filterOptions, cancellationToken);
+
+        var response = movies.MapToResponse(pageOptions, movieCount);
         return Ok(response);
     }
 

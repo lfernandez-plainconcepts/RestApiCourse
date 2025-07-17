@@ -112,12 +112,21 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
     }
 
     public async Task<IEnumerable<Movie>> GetAllAsync(
-        Guid? userId = null,
+        MoviesFilterOptions filterOptions,
+        PageOptions pageOptions,
+        SortOptions? sortOptions = default,
         CancellationToken cancellationToken = default)
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
 
-        var moviesQuery = new CommandDefinition("""
+        var orderClause = sortOptions is null
+            ? string.Empty
+            : $"""
+              , m.{sortOptions.Field}
+              ORDER BY m.{sortOptions.Field} {sortOptions.Direction.ToSqlMoniker()}
+              """;
+
+        var moviesQuery = new CommandDefinition($"""
             SELECT m.*, 
                    string_agg(g.name, ',') AS genres,
                    round(avg(r.rating), 1) AS rating,
@@ -126,9 +135,20 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
               LEFT JOIN genres g ON m.id = g.movieId
               LEFT JOIN ratings r ON m.id = r.movieId
               LEFT JOIN ratings myr ON m.id = myr.movieId AND myr.userId = @UserId
-            GROUP BY id, userrating;
+            WHERE (@Title is null or m.title like ('%' || @Title || '%'))
+              AND (@YearOfRelease is null or m.yearOfRelease = @YearOfRelease)
+            GROUP BY id, userrating {orderClause}
+            LIMIT @PageSize
+            OFFSET @PageOffset;
             """,
-            new { UserId = userId },
+            new
+            {
+                filterOptions.UserId,
+                filterOptions.Title,
+                filterOptions.YearOfRelease,
+                pageOptions.PageSize,
+                pageOptions.PageOffset,
+            },
             cancellationToken: cancellationToken);
 
         var queryResult = await connection.QueryAsync(moviesQuery);
@@ -140,10 +160,17 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
             YearOfRelease = result.yearofrelease,
             Rating = (float?)result.rating,
             UserRating = (int?)result.userrating,
-            Genres = Enumerable.ToList(result.genres?.Split(',')) ?? new List<string>()
+            Genres = MapGenres(result.genres)
         });
 
         return movies;
+    }
+
+    private static List<string> MapGenres(string genres)
+    {
+        return string.IsNullOrEmpty(genres)
+            ? []
+            : [.. genres.Split(',')];
     }
 
     public async Task<Movie?> GetByIdAsync(
@@ -228,6 +255,28 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
         movie.Genres = [.. genres];
 
         return movie;
+    }
+
+    public async Task<int> GetCountAsync(
+        MoviesFilterOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(cancellationToken);
+
+        var countMoviesQuery = new CommandDefinition($"""
+            SELECT COUNT(m.id)
+            FROM movies m
+            WHERE (@Title is null or m.title like ('%' || @Title || '%'))
+              AND (@YearOfRelease is null or m.yearOfRelease = @YearOfRelease);            
+            """,
+            new
+            {
+                options.Title,
+                options.YearOfRelease,
+            },
+            cancellationToken: cancellationToken);
+
+        return await connection.QuerySingleAsync<int>(countMoviesQuery);
     }
 
     public async Task<bool> UpdateAsync(

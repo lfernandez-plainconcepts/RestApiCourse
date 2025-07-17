@@ -1,45 +1,66 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Movies.Api.Auth;
 using Movies.Api.Mapping;
+using Movies.Api.Swagger;
 using Movies.Application;
 using Movies.Application.Database;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 // Add services to the container.
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
+builder.Services
+    .AddAuthentication(options =>
     {
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)), // Not secure. It is just for learning purposes.
-        ValidateIssuerSigningKey = true,
-        ValidateLifetime = true,
-        ValidateIssuer = true,
-        ValidIssuer = config["Jwt:Issuer"],
-        ValidateAudience = true,
-        ValidAudience = config["Jwt:Audience"],
-    };
-});
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)), // Not secure. It is just for learning purposes.
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidateIssuer = true,
+            ValidIssuer = config["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = config["Jwt:Audience"],
+        };
+    });
 
-builder.Services.AddAuthorizationBuilder()
+builder.Services
+    .AddAuthorizationBuilder()
     .AddPolicy(AuthConstants.Policies.Admin, p => p.RequireClaim(AuthConstants.Claims.Admin, "true"))
     .AddPolicy(AuthConstants.Policies.TrustedMember, p => p.RequireAssertion(c =>
         c.User.HasClaim(m => m is { Type: AuthConstants.Claims.Admin, Value: "true" }) ||
         c.User.HasClaim(m => m is { Type: AuthConstants.Claims.TrustedMember, Value: "true" })));
 
+builder.Services
+    .AddApiVersioning(options =>
+    {
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.ReportApiVersions = true;
+        options.ApiVersionReader = new MediaTypeApiVersionReader("api-version");
+    })
+    .AddMvc()
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+builder.Services.AddSwaggerGen(x => x.OperationFilter<SwaggerDefaultValues>());
 
 builder.Services.AddApplication();
 builder.Services.AddDatabase(config["Database:ConnectionString"]!);
@@ -50,7 +71,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        var apiGroupNames = app.DescribeApiVersions()
+            .Select(v => v.GroupName);
+
+        foreach (var apiGroupName in apiGroupNames)
+        {
+            options.SwaggerEndpoint($"/swagger/{apiGroupName}/swagger.json", apiGroupName);
+        }
+    });
 }
 
 app.UseHttpsRedirection();
@@ -64,4 +94,10 @@ app.MapControllers();
 var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
 await dbInitializer.InitializeAsync();
 
+if (bool.TryParse(config["Database:SeedOnStartup"], out bool seedOnStartup) && seedOnStartup)
+{
+    await dbInitializer.SeedAsync();
+}
+
 await app.RunAsync();
+
