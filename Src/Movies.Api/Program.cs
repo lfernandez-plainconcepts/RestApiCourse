@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Movies.Api.Auth;
+using Movies.Api.Cache;
 using Movies.Api.Health;
 using Movies.Api.Mapping;
 using Movies.Api.Swagger;
 using Movies.Application;
 using Movies.Application.Database;
+using Movies.Contracts.Requests;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 
@@ -57,6 +59,23 @@ builder.Services
         options.SubstituteApiVersionInUrl = true;
     });
 
+builder.Services.AddResponseCaching();
+
+builder.Services.AddOutputCache(options =>
+{
+    options.AddBasePolicy(c => c.Cache());
+    options.AddPolicy(CacheConstants.Policies.Movies, policy =>
+    {
+        policy.Cache()
+            .Expire(TimeSpan.FromMinutes(1))
+            .SetVaryByQuery([
+                .. RequestMoviesFilterParams.ValidFilterFields,
+                .. RequestPageParams.ValidPageFields,
+                .. RequestSortParams.ValidSortFields])
+            .Tag(CacheConstants.Tags.Movies);
+    });
+});
+
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>(DatabaseHealthCheck.Name);
 
@@ -94,7 +113,17 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Caching must be used after configuring CORS
+
 app.UseResponseCaching();
+
+// By default:
+// - only 200 responses are cached.
+// - only GET and HEAD requests are cached.
+// - responses that set cookies are not cached.
+// - response to authenticated requests are not cached.
+app.UseOutputCache();
+
 app.UseMiddleware<ValidationMappingMiddleware>();
 app.MapControllers();
 
