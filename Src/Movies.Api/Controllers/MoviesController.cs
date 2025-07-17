@@ -59,6 +59,7 @@ public class MoviesController(IMovieService movieService, IOutputCacheStore outp
 
     [HttpGet(ApiEndpoints.Movies.GetAll)]
     // By default, OutputCache doesn't cache authenticated requests.
+    [ServiceFilter(typeof(ApiKeyAuthFilter))]
     [OutputCache(PolicyName = CacheConstants.Policies.Movies)]
     [ResponseCache(Duration = 30, VaryByQueryKeys = new[] { "title", "year", "sortBy", "page", "pageSize" }, VaryByHeader = "Accept, Accept-Encoding", Location = ResponseCacheLocation.Any)]
     [ProducesResponseType(typeof(MoviesResponse), StatusCodes.Status200OK)]
