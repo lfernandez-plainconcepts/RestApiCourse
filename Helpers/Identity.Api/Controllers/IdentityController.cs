@@ -8,17 +8,18 @@ using System.Text.Json;
 namespace Identity.Api.Controllers;
 
 [ApiController]
-public class IdentityController : ControllerBase
+public class IdentityController(IConfiguration configuration) : ControllerBase
 {
-    private const string TokenSecret = "ForTheLoveOfGodStoreAndLoadThisSecurely"; // Not secure. It is just for learning purposes.
     private static readonly TimeSpan TokenLifetime = TimeSpan.FromHours(8);
+    private readonly IConfiguration configuration = configuration;
 
     [HttpPost("token")]
     public IActionResult GenerateToken(
         [FromBody] TokenGenerationRequest request)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(TokenSecret);
+        var tokenSecret = configuration.GetValue<string>("Jwt:Key");
+        var key = Encoding.UTF8.GetBytes(tokenSecret!);
 
         var claims = new List<Claim>
         {
@@ -47,8 +48,8 @@ public class IdentityController : ControllerBase
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.Add(TokenLifetime),
-            Issuer = "https://id.movies.com",
-            Audience = "https://api.movies.com",
+            Issuer = configuration.GetValue<string>("Jwt:Issuer"),
+            Audience = configuration.GetValue<string>("Jwt:Audience"),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
