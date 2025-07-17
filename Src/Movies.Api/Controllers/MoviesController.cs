@@ -47,7 +47,7 @@ public class MoviesController(IMovieService movieService) : ControllerBase
     }
 
     [HttpGet(ApiEndpoints.Movies.GetAll)]
-    public async Task<IActionResult> GetAllV1(
+    public async Task<IActionResult> GetAll(
         [FromQuery] RequestMoviesFilterParams filterParams,
         [FromQuery] RequestPageParams pageParams,
         [FromQuery] RequestSortParams sortParams,
