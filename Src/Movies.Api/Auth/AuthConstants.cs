@@ -14,4 +14,9 @@ public static class AuthConstants
         public const string TrustedMember = "trusted_member";
         public const string UserId = "userid";
     }
+
+    public static class ApiKeys
+    {
+        public const string HeaderName = "x-api-key";
+    }
 }

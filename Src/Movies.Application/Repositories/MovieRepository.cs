@@ -67,12 +67,7 @@ public class MovieRepository(IDbConnectionFactory dbConnectionFactory) : IMovieR
             new { MovieId = id },
             cancellationToken: cancellationToken);
 
-        var genresDeletionResult = await connection.ExecuteAsync(deleteMovieGenresCommand);
-        if (genresDeletionResult <= 0)
-        {
-            transaction.Rollback();
-            return false;
-        }
+        _ = await connection.ExecuteAsync(deleteMovieGenresCommand);
 
         var deleteMovieCommand = new CommandDefinition("""
             DELETE FROM movies 
