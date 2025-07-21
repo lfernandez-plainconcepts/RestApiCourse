@@ -10,6 +10,7 @@ using Movies.Api.Swagger;
 using Movies.Application;
 using Movies.Application.Database;
 using Movies.Contracts.Requests;
+using Movies.Minimal.Api.Endpoints;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 
@@ -87,7 +88,7 @@ builder.Services.AddOutputCache(options =>
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>(DatabaseHealthCheck.Name);
 
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -133,7 +134,7 @@ app.UseResponseCaching();
 app.UseOutputCache();
 
 app.UseMiddleware<ValidationMappingMiddleware>();
-app.MapControllers();
+app.MapApiEndpoints();
 
 var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
 await dbInitializer.InitializeAsync();
