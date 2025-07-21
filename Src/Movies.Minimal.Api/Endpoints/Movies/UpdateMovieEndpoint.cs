@@ -41,6 +41,8 @@ public static class UpdateMovieEndpoint
             .Produces<MovieResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .Produces<ValidationFailureResponse>(StatusCodes.Status400BadRequest)
+            .WithApiVersionSet(ApiVersioning.VersionSet)
+            .HasApiVersion(1.0)
             .RequireAuthorization(AuthConstants.Policies.TrustedMember);
 
         return builder;

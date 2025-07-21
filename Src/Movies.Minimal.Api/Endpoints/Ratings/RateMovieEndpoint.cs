@@ -33,6 +33,8 @@ public static class RateMovieEndpoint
             .WithName(Name)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
+            .WithApiVersionSet(ApiVersioning.VersionSet)
+            .HasApiVersion(1.0)
             .RequireAuthorization();
 
         return builder;

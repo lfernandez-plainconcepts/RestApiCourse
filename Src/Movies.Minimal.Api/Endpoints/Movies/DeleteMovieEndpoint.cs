@@ -31,6 +31,8 @@ public static class DeleteMovieEndpoint
             .WithName(Name)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
+            .WithApiVersionSet(ApiVersioning.VersionSet)
+            .HasApiVersion(1.0)
             .RequireAuthorization(AuthConstants.Policies.Admin);
 
         return builder;
