@@ -30,6 +30,7 @@ public static class GetMovieEndpoint
                 }
 
                 var response = movie.MapToResponse();
+
                 return TypedResults.Ok(response);
             })
             .WithName(Name);

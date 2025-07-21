@@ -8,7 +8,7 @@ public class RequestMoviesFilterParams
         "year"
     ];
 
-    public required string? Title { get; init; }
+    public string? Title { get; init; }
 
-    public required int? Year { get; init; }
+    public int? Year { get; init; }
 }

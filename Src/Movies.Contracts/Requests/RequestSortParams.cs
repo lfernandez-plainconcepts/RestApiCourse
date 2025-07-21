@@ -7,5 +7,5 @@ public class RequestSortParams
         "sortBy"
     ];
 
-    public required string? SortBy { get; init; }
+    public string? SortBy { get; init; }
 }
