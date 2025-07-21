@@ -32,7 +32,9 @@ public class MoviesController(IMovieService movieService, IOutputCacheStore outp
         await _movieService.CreateAsync(movie, userId, cancellationToken);
         await _outputCacheStore.EvictByTagAsync(CacheConstants.Tags.Movies, cancellationToken);
 
-        return CreatedAtAction(nameof(Get), new { idOrSlug = movie.Id }, movie);
+        var response = movie.MapToResponse();
+
+        return CreatedAtAction(nameof(Get), new { idOrSlug = movie.Id }, response);
     }
 
     [HttpGet(ApiEndpoints.Movies.Get)]
@@ -103,7 +105,7 @@ public class MoviesController(IMovieService movieService, IOutputCacheStore outp
             return NotFound();
         }
         await _outputCacheStore.EvictByTagAsync(CacheConstants.Tags.Movies, cancellationToken);
-        var response = movie.MapToResponse();
+        var response = updatedMovie.MapToResponse();
         return Ok(response);
     }
 
@@ -114,8 +116,7 @@ public class MoviesController(IMovieService movieService, IOutputCacheStore outp
     public async Task<IActionResult> Delete([FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.GetUserId();
-        var deleted = await _movieService.DeleteByIdAsync(id, userId, cancellationToken);
+        var deleted = await _movieService.DeleteByIdAsync(id, cancellationToken);
         if (!deleted)
         {
             return NotFound();

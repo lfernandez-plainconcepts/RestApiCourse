@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Api.Sdk", "Src\Movie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Api.Sdk.Consumer", "Src\Movies.Api.Sdk.Consumer\Movies.Api.Sdk.Consumer.csproj", "{86F23EED-95BE-45B5-9DEB-83A69E96A8C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Minimal.Api", "Src\Movies.Minimal.Api\Movies.Minimal.Api.csproj", "{65FF81E8-0BA8-5FFF-3E28-2CD50615D516}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{86F23EED-95BE-45B5-9DEB-83A69E96A8C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86F23EED-95BE-45B5-9DEB-83A69E96A8C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86F23EED-95BE-45B5-9DEB-83A69E96A8C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65FF81E8-0BA8-5FFF-3E28-2CD50615D516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65FF81E8-0BA8-5FFF-3E28-2CD50615D516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65FF81E8-0BA8-5FFF-3E28-2CD50615D516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65FF81E8-0BA8-5FFF-3E28-2CD50615D516}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{7EAA0A45-61F4-1420-66FA-DE2C5B7C151D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{BA5B060A-138F-4AA6-9938-0D155F187A77} = {E7919E37-E700-4CCD-9546-24D78521708B}
 		{86F23EED-95BE-45B5-9DEB-83A69E96A8C4} = {E7919E37-E700-4CCD-9546-24D78521708B}
+		{65FF81E8-0BA8-5FFF-3E28-2CD50615D516} = {E7919E37-E700-4CCD-9546-24D78521708B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90770F8C-E500-46D0-BA46-08A9B9219290}

@@ -2,13 +2,16 @@
 
 public class RequestPageParams
 {
+    public const int DefaultPage = 1;
+    public const int DefaultPageSize = 10;
+
     public static readonly string[] ValidPageFields =
     [
         "page",
         "pageSize"
     ];
 
-    public required int? Page { get; init; }
+    public int? Page { get; init; } = DefaultPage;
 
-    public required int? PageSize { get; init; }
+    public int? PageSize { get; init; } = DefaultPageSize;
 }

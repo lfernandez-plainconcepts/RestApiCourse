@@ -30,7 +30,6 @@ public class MovieService(
 
     public Task<bool> DeleteByIdAsync(
         Guid id,
-        Guid? userId = default,
         CancellationToken cancellationToken = default)
     {
         return _movieRepository.DeleteByIdAsync(id, cancellationToken);
