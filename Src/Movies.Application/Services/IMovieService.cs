@@ -11,7 +11,6 @@ public interface IMovieService
 
     Task<bool> DeleteByIdAsync(
         Guid id,
-        Guid? userId = default,
         CancellationToken cancellationToken = default);
 
     Task<IEnumerable<Movie>> GetAllAsync(
