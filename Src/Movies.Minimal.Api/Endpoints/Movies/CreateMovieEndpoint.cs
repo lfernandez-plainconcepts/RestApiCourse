@@ -5,6 +5,7 @@ using Movies.Api.Cache;
 using Movies.Api.Mapping;
 using Movies.Application.Services;
 using Movies.Contracts.Requests;
+using Movies.Contracts.Responses;
 
 namespace Movies.Minimal.Api.Endpoints.Movies;
 
@@ -36,6 +37,8 @@ public static class CreateMovieEndpoint
                     new { idOrSlug = movie.Id });
             })
             .WithName(Name)
+            .Produces<MovieResponse>(StatusCodes.Status201Created)
+            .Produces<ValidationFailureResponse>(StatusCodes.Status400BadRequest)
             .RequireAuthorization(AuthConstants.Policies.TrustedMember);
 
         return builder;

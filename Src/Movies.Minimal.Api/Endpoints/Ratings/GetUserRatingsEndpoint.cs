@@ -2,6 +2,7 @@
 using Movies.Api.Auth;
 using Movies.Api.Mapping;
 using Movies.Application.Repositories;
+using Movies.Contracts.Responses;
 
 namespace Movies.Minimal.Api.Endpoints.Ratings;
 
@@ -25,6 +26,7 @@ public static class GetUserRatingsEndpoint
                 return Results.Ok(response);
             })
             .WithName(Name)
+            .Produces<IEnumerable<MovieRatingResponse>>(StatusCodes.Status200OK)
             .RequireAuthorization();
 
         return builder;

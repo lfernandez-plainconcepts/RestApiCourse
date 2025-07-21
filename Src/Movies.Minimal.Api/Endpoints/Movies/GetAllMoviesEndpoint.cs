@@ -3,6 +3,7 @@ using Movies.Api.Auth;
 using Movies.Api.Mapping;
 using Movies.Application.Services;
 using Movies.Contracts.Requests;
+using Movies.Contracts.Responses;
 
 namespace Movies.Minimal.Api.Endpoints.Movies;
 
@@ -38,6 +39,7 @@ public static class GetAllMoviesEndpoint
 
                 return TypedResults.Ok(response);
             })
+            .Produces<MoviesResponse>(StatusCodes.Status200OK)
             .WithName(Name);
 
         return builder;

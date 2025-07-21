@@ -61,12 +61,13 @@ builder.Services
         options.ReportApiVersions = true;
         options.ApiVersionReader = new MediaTypeApiVersionReader("api-version");
     })
-    .AddMvc()
     .AddApiExplorer(options =>
     {
         options.GroupNameFormat = "'v'VVV";
         options.SubstituteApiVersionInUrl = true;
     });
+
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddResponseCaching();
 
@@ -87,8 +88,6 @@ builder.Services.AddOutputCache(options =>
 
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>(DatabaseHealthCheck.Name);
-
-//builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();

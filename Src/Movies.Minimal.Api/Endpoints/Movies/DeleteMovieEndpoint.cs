@@ -29,6 +29,8 @@ public static class DeleteMovieEndpoint
                 return TypedResults.Ok();
             })
             .WithName(Name)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization(AuthConstants.Policies.Admin);
 
         return builder;
