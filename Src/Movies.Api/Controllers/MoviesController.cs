@@ -105,7 +105,7 @@ public class MoviesController(IMovieService movieService, IOutputCacheStore outp
             return NotFound();
         }
         await _outputCacheStore.EvictByTagAsync(CacheConstants.Tags.Movies, cancellationToken);
-        var response = movie.MapToResponse();
+        var response = updatedMovie.MapToResponse();
         return Ok(response);
     }
 
