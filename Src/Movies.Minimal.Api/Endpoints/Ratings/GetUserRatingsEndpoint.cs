@@ -2,7 +2,6 @@
 using Movies.Api.Auth;
 using Movies.Api.Mapping;
 using Movies.Application.Repositories;
-using Movies.Contracts.Requests;
 
 namespace Movies.Minimal.Api.Endpoints.Ratings;
 
@@ -14,8 +13,6 @@ public static class GetUserRatingsEndpoint
     {
         builder
             .MapGet(ApiEndpoints.Ratings.GetUserRatings, async (
-                Guid id,
-                RateMovieRequest request,
                 IRatingService ratingService,
                 HttpContext httpContext,
                 CancellationToken cancellationToken) =>
@@ -27,7 +24,8 @@ public static class GetUserRatingsEndpoint
 
                 return Results.Ok(response);
             })
-            .WithName(Name);
+            .WithName(Name)
+            .RequireAuthorization();
 
         return builder;
     }

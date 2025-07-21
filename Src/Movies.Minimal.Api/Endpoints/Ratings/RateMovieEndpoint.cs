@@ -1,4 +1,5 @@
-﻿using Movies.Api;
+﻿using Microsoft.AspNetCore.Mvc;
+using Movies.Api;
 using Movies.Api.Auth;
 using Movies.Application.Repositories;
 using Movies.Contracts.Requests;
@@ -14,7 +15,7 @@ public static class RateMovieEndpoint
         builder
             .MapPut(ApiEndpoints.Movies.Rate, async (
                 Guid id,
-                RateMovieRequest request,
+                [FromBody] RateMovieRequest request,
                 IRatingService ratingService,
                 HttpContext httpContext,
                 CancellationToken cancellationToken) =>
@@ -29,7 +30,8 @@ public static class RateMovieEndpoint
 
                 return result ? Results.Ok() : Results.NotFound();
             })
-            .WithName(Name);
+            .WithName(Name)
+            .RequireAuthorization();
 
         return builder;
     }

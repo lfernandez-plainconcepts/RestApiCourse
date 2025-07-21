@@ -35,7 +35,8 @@ public static class CreateMovieEndpoint
                     GetMovieEndpoint.Name,
                     new { idOrSlug = movie.Id });
             })
-            .WithName(Name);
+            .WithName(Name)
+            .RequireAuthorization(AuthConstants.Policies.TrustedMember);
 
         return builder;
     }
