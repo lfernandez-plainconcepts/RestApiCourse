@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Movies.Api.Swagger;
+namespace Movies.Minimal.Api.Swagger;
 
 public class ConfigureSwaggerOptions(
     IApiVersionDescriptionProvider apiVersionDescriptionProvider,

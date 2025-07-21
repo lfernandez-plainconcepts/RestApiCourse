@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
-namespace Movies.Api.Auth;
+namespace Movies.Minimal.Api.Auth;
 
 public class AdminAuthRequirement(IConfiguration configuration) : IAuthorizationHandler, IAuthorizationRequirement
 {

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Movies.Api;
-using Movies.Api.Auth;
 using Movies.Application.Repositories;
 using Movies.Contracts.Requests;
+using Movies.Minimal.Api.Auth;
 
 namespace Movies.Minimal.Api.Endpoints.Ratings;
 

@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json;
 
-namespace Movies.Api.Swagger;
+namespace Movies.Minimal.Api.Swagger;
 
 public class SwaggerDefaultValues : IOperationFilter
 {

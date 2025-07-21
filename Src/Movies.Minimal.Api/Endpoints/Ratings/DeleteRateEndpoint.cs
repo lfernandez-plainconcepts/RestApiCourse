@@ -1,6 +1,5 @@
-﻿using Movies.Api;
-using Movies.Api.Auth;
-using Movies.Application.Repositories;
+﻿using Movies.Application.Repositories;
+using Movies.Minimal.Api.Auth;
 
 namespace Movies.Minimal.Api.Endpoints.Ratings;
 

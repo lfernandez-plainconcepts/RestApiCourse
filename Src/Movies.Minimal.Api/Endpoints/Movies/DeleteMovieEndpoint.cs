@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.OutputCaching;
-using Movies.Api;
-using Movies.Api.Auth;
-using Movies.Api.Cache;
 using Movies.Application.Services;
+using Movies.Minimal.Api.Auth;
+using Movies.Minimal.Api.Cache;
 
 namespace Movies.Minimal.Api.Endpoints.Movies;
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Movies.Application.Database;
 
-namespace Movies.Api.Health;
+namespace Movies.Minimal.Api.Health;
 
 public class DatabaseHealthCheck(IDbConnectionFactory dbConnectionFactory,
     ILogger<DatabaseHealthCheck> logger) : IHealthCheck

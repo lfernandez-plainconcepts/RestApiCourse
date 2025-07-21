@@ -1,8 +1,7 @@
-﻿using Movies.Api;
-using Movies.Api.Auth;
-using Movies.Api.Mapping;
-using Movies.Application.Repositories;
+﻿using Movies.Application.Repositories;
 using Movies.Contracts.Responses;
+using Movies.Minimal.Api.Auth;
+using Movies.Minimal.Api.Mapping;
 
 namespace Movies.Minimal.Api.Endpoints.Ratings;
 

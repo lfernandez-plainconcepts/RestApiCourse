@@ -1,8 +1,8 @@
-﻿using Movies.Api;
-using Movies.Api.Auth;
-using Movies.Api.Mapping;
-using Movies.Application.Services;
+﻿using Movies.Application.Services;
 using Movies.Contracts.Responses;
+using Movies.Minimal.Api.Auth;
+using Movies.Minimal.Api.Cache;
+using Movies.Minimal.Api.Mapping;
 
 namespace Movies.Minimal.Api.Endpoints.Movies;
 
@@ -34,11 +34,12 @@ public static class GetMovieEndpoint
 
                 return TypedResults.Ok(response);
             })
+            .WithName(Name)
             .Produces<MoviesResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithApiVersionSet(ApiVersioning.VersionSet)
             .HasApiVersion(1.0)
-            .WithName(Name);
+            .CacheOutput(CacheConstants.Policies.Movies);
 
         return builder;
     }

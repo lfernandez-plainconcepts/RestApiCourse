@@ -1,4 +1,4 @@
-﻿namespace Movies.Api.Cache;
+﻿namespace Movies.Minimal.Api.Cache;
 
 public static class CacheConstants
 {

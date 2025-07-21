@@ -1,9 +1,9 @@
-﻿using Movies.Api;
-using Movies.Api.Auth;
-using Movies.Api.Mapping;
-using Movies.Application.Services;
+﻿using Movies.Application.Services;
 using Movies.Contracts.Requests;
 using Movies.Contracts.Responses;
+using Movies.Minimal.Api.Auth;
+using Movies.Minimal.Api.Cache;
+using Movies.Minimal.Api.Mapping;
 
 namespace Movies.Minimal.Api.Endpoints.Movies;
 
@@ -39,10 +39,11 @@ public static class GetAllMoviesEndpoint
 
                 return TypedResults.Ok(response);
             })
+            .WithName($"{Name}V1")
             .Produces<MoviesResponse>(StatusCodes.Status200OK)
             .WithApiVersionSet(ApiVersioning.VersionSet)
             .HasApiVersion(1.0)
-            .WithName($"{Name}V1");
+            .CacheOutput(CacheConstants.Policies.Movies);
 
         builder
             .MapGet(ApiEndpoints.Movies.GetAll, async (
@@ -70,10 +71,11 @@ public static class GetAllMoviesEndpoint
 
                 return TypedResults.Ok(response);
             })
+            .WithName($"{Name}V2")
             .Produces<MoviesResponse>(StatusCodes.Status200OK)
             .WithApiVersionSet(ApiVersioning.VersionSet)
             .HasApiVersion(2.0)
-            .WithName($"{Name}V2");
+            .CacheOutput(CacheConstants.Policies.Movies);
 
         return builder;
     }

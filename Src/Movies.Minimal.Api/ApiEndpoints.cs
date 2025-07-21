@@ -1,4 +1,4 @@
-﻿namespace Movies.Api;
+﻿namespace Movies.Minimal.Api;
 
 public static class ApiEndpoints
 {
